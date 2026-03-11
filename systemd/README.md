@@ -3,9 +3,32 @@
 Use `systemd-run` to create a sandbox for VS Code to ensure Copilot (or any
 other AI) may not access sensitive environment variables and files.
 
+## Benefits
+
+- AI & other extensions can't access files in your home directory
+- The environment will be purified, so extensions can't access sensitive
+  environment variables (e.g. tokens, credentials, agent sockets, etc.)
+- You can symlink files with sensitive data inside workspaces to outside of
+  the workspace, so they are still accessible if you run commands outside of
+  VS Code, e.g.:
+
+```sh
+# since the sandbox will not have access to the home directory, the symlink will
+# be worthless inside the sandbox, but it will work outside of it
+ln -s /home/me/.secrets/my-ansible-vault-pw /path/to/workspace/my-ansible-vault-pw
+```
+
+## Drawbacks
+
+- Some extensions may not work properly if they rely on access to files in the
+  home directory or environment variables (you may need to add additional mounts
+  or env vars to the sandbox settings)
+- Some extensions only make sense if they have access to secrets (e.g. sops
+  or ansible-vault extensions)
+
 ## Setup
 
-- Adjust settings.sh if needed (e.g. to point to your vscode executable)
+- Adjust settings.sh if needed (e.g. to point to your vscode executable).
   Have a look at the comments in the file for more details.
 - Create the necessary directories
 

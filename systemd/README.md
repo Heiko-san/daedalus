@@ -5,7 +5,8 @@ other AI) may not access sensitive environment variables and files.
 
 ## Benefits
 
-- AI & other extensions can't access files in your home directory
+- AI & other extensions can't access files in your home directory (even if there
+  are bugs in the access control of the AI itself)
 - The environment will be purified, so extensions can't access sensitive
   environment variables (e.g. tokens, credentials, agent sockets, etc.)
 - You can symlink files with sensitive data inside workspaces to outside of

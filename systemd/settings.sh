@@ -21,6 +21,11 @@ USERDATA_COMMON="$SANDBOX_USERDATA/common"
 # the user's run directory (for sockets, e.g. for dbus), this should not require
 # modification in most cases, but can be set to a custom path if needed
 USER_RUNDIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+# local runtime dir for sockets, e.g. for dbus (wayland display and dbus
+# session bus will be mounted into there from the user's runtime dir)
+SANDBOX_RUNDIR="$SANDBOX_HOME/run"
+# the wayland display to use inside the sandbox, this will be passed through
+WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-wayland-0}"
 # path to the vscode executable to run
 VSCODE_EXECUTABLE="code"
 # the directories that should be writeable inside the sandbox, even if they are
@@ -32,8 +37,6 @@ RW_DIRS=(
 
     # the sandbox home
     "$SANDBOX_HOME"
-    # the user runtime dir for sockets, e.g. for dbus
-    "$USER_RUNDIR"
     # additional paths (e.g. for programming language toolchains)
     "$HOME/.pyenv"
 )
@@ -41,10 +44,11 @@ RW_DIRS=(
 ENV_VARS=(
     # home dir
     HOME="$SANDBOX_HOME"
-    # runtime dir for sockets, e.g. for dbus
-    XDG_RUNTIME_DIR="$USER_RUNDIR"
+    # local runtime dir for sockets, e.g. for dbus (wayland display and dbus
+    # session bus will be mounted into there from the user's runtime dir)
+    XDG_RUNTIME_DIR="$SANDBOX_RUNDIR"
     # display for gui
-    WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-wayland-0}"
+    WAYLAND_DISPLAY="$WAYLAND_DISPLAY"
     # dbus session bus address
-    DBUS_SESSION_BUS_ADDRESS="${DBUS_SESSION_BUS_ADDRESS:-unix:path=$USER_RUNDIR/bus}"
+    DBUS_SESSION_BUS_ADDRESS="unix:path=$SANDBOX_RUNDIR/bus"
 )

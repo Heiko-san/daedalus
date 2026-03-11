@@ -17,7 +17,7 @@ USERDATA_DIR="${SANDBOX_USERDATA}/${WORKSPACE_ID}"
 
 # populate the user-data dir for this instance by symlinking all files from the
 # common dir into it
-mkdir -p "$SANDBOX_EXTENSIONS" "$USERDATA_DIR"
+mkdir -p "$SANDBOX_EXTENSIONS" "$USERDATA_DIR" "$SANDBOX_RUNDIR"
 find "$USERDATA_COMMON" -mindepth 1 -maxdepth 1 -print0 \
     | while IFS= read -r -d '' src; do
         base="$(basename "$src")"
@@ -50,6 +50,11 @@ args=(
     --property=LockPersonality=yes
     # set the CWD
     --working-directory="$WORKDIR"
+    # bind the wayland display and dbus session bus sockets into the sandbox
+    # (we don't want to bind the whole runtime dir, because it may contain other
+    # sockets that we don't want to be visible inside the sandbox)
+    --property="BindPaths=$USER_RUNDIR/$WAYLAND_DISPLAY:$SANDBOX_RUNDIR/$WAYLAND_DISPLAY"
+    --property="BindPaths=$USER_RUNDIR/bus:$SANDBOX_RUNDIR/bus"
 )
 
 # add all the required env vars (e.g. for display, dbus, etc.)

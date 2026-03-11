@@ -77,3 +77,12 @@ systemctl --user stop run-p599604-i599904.service
 ```sh
 journalctl --user -xefu run-p599604-i599904.service
 ```
+
+## Disclaimer
+
+This is a personal project. Even though I have tried to make it as generic as
+possible, it may not work on every linux.
+
+It was tested on:
+
+- Manjaro Linux (KDE, Xwayland) with systemd 259 & visual-studio-code-bin AUR package

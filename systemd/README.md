@@ -80,8 +80,8 @@ journalctl --user -xefu run-p599604-i599904.service
 
 ## Disclaimer
 
-This is a personal project. Even though I have tried to make it as generic as
-possible, it may not work on every linux.
+This is a personal project, it may not work on every linux.
+It was designed for use on systems with Wayland and will need modifications for X11.
 
 It was tested on:
 
